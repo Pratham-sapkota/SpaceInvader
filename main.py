@@ -20,7 +20,7 @@ background=pygame.image.load('background.jpg')
 #Player
 playerImg=pygame.image.load('hero.png')
 playerX=370
-playerY=480
+playerY=500
 playerX_change=0
 
 
@@ -35,7 +35,7 @@ number_of_enemies=6
 for i in range(number_of_enemies):
     enemyImg.append(pygame.image.load('alien.png'))
     enemyX.append(random.randint(0,800))
-    enemyY.append(random.randint(20,150))
+    enemyY.append(random.randint(10,100))
     enemyX_change.append(1)
     enemyY_change.append(40)
 
@@ -58,6 +58,14 @@ textY=10
 #GAMEOVER TEXT
 over_font=pygame.font.Font('freesansbold.ttf',64)
 
+#PLAY AGAIN BUTTON
+color_button=(128,0,0) 
+button_font=pygame.font.Font('freesansbold.ttf',32)
+
+def play_again():
+    play_again_text=button_font.render("Play again?",True,(255,255,255))
+    screen.blit(play_again_text,(347,380))
+
 
 def show_score(x,y):
     score=font.render("Score: "+str(score_value),True,(255,255,255))
@@ -65,8 +73,7 @@ def show_score(x,y):
 
 def game_over_text():
      over_text=over_font.render("Game Over",True,(255,255,255))
-     screen.blit(over_text,(200,250)) #middle of screen
-
+     screen.blit(over_text,(240,250)) #middle of screen
 
 def player(x,y):
     #drawing the image of player on the window
@@ -120,15 +127,18 @@ while running:
         if event.type==pygame.KEYUP: 
             if event.key==pygame.K_LEFT or event.key==pygame.K_RIGHT: 
                 playerX_change=0
-
+        
      #Movement of enemy   
     for i in range(number_of_enemies):
 
         #game over
-        if enemyY[i]>440:
+        if enemyY[i]>420:
             for j in range(number_of_enemies):
                 enemyY[j]=2000
             game_over_text()
+            pygame.draw.rect(screen,color_button,[345,372,192,60],border_radius=5)
+            play_again()
+
             break
         enemyX[i] +=enemyX_change[i]
         if enemyX[i] <=0:
@@ -168,8 +178,7 @@ while running:
         bulletY-=bulletY_change
     player(playerX,playerY)
     show_score(textX,textY)
-   
-
+    
     #to make sure the display is updating
     pygame.display.update() 
 
